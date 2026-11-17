@@ -97,6 +97,12 @@ module spi_peripheral (
             address <= 0;
             data <= 0;
             data_ready <= 0;
+
+            en_reg_out_7_0 <= 0;
+            en_reg_out_15_8 <= 0;
+            en_reg_pwm_7_0 <= 0;
+            en_reg_pwm_15_8 <= 0;
+            pwm_duty_cycle <= 0;
         end else begin
             if (cs_n_synced) begin
                 clk_counter <= 0;
@@ -108,9 +114,9 @@ module spi_peripheral (
                     copi_store[0] <= copi_synced;
 
                     if (clk_counter == 15) begin
-                        read_mode <= copi_store[15];
-                        address <= copi_store[14:8];
-                        data <= copi_store[7:0];
+                        read_mode <= copi_store[14];
+                        address   <= copi_store[13:7];
+                        data      <= {copi_store[6:0], copi_synced};
 
                         data_ready <= 1;
                     end
